@@ -22,6 +22,7 @@ const int PIN_PIR = 2;
 const int PIN_BOTON_ALARMA = 12; 
 
 // Actuadores (Salidas a los Relés)
+// Los LEDs de estado ahora van conectados físicamente a estos relés
 const int RELAY_VENTILACION = 4;
 const int RELAY_ILUMINACION = 5;
 const int RELAY_RIEGO = 6;
@@ -79,13 +80,19 @@ void loop() {
   if (temperaturaC >= LIMITE_TEMP) digitalWrite(RELAY_VENTILACION, HIGH);
   else digitalWrite(RELAY_VENTILACION, LOW);
 
-  // 2. Iluminación
+  // 2. Iluminación (El LED se encenderá solo al activarse el relé)
   if (lecturaLuz < UMBRAL_LUZ) digitalWrite(RELAY_ILUMINACION, HIGH);
   else digitalWrite(RELAY_ILUMINACION, LOW);
 
-  // 3. Riego
+  // 3. Riego (El LED azul se encenderá solo al activarse el relé)
   if (lecturaHumedad < UMBRAL_HUMEDAD) digitalWrite(RELAY_RIEGO, HIGH);
   else digitalWrite(RELAY_RIEGO, LOW);
+
+  // Actualizar LCD
+  if (millis() - tiempoUltimaLectura > 500) {
+    actualizarLCD(temperaturaC, lecturaLuz, lecturaHumedad);
+    tiempoUltimaLectura = millis();
+  }
 }
 
 void gestionarAlarma() {
@@ -108,4 +115,19 @@ void gestionarAlarma() {
     digitalWrite(PIN_LED_ALARMA, LOW);
     noTone(PIN_BUZZER);
   }
+}
+
+void actualizarLCD(float temp, int luz, int hum) {
+  lcd.setCursor(0, 0);
+  lcd.print("T:"); lcd.print((int)temp); lcd.print("C ");
+
+  if(sistemaAlarmaActivo) lcd.print("Alr:ON ");
+  else lcd.print("Alr:OFF");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Luz:"); lcd.print(luz);
+  if(luz < UMBRAL_LUZ) lcd.print("*");
+  else lcd.print(" ");
+
+  lcd.print(" H:"); lcd.print(hum);
 }
