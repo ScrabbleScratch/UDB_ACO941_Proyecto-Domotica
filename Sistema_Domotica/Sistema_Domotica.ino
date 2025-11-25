@@ -70,4 +70,18 @@ void loop() {
   // Conversión Temp
   float voltaje = lecturaTemp * 5.0 / 1024.0;
   float temperaturaC = (voltaje - 0.5) * 100.0;
+
+  // --- CONTROL DE ACTUADORES ---
+
+  // 1. Ventilación
+  if (temperaturaC >= LIMITE_TEMP) digitalWrite(RELAY_VENTILACION, HIGH);
+  else digitalWrite(RELAY_VENTILACION, LOW);
+
+  // 2. Iluminación
+  if (lecturaLuz < UMBRAL_LUZ) digitalWrite(RELAY_ILUMINACION, HIGH);
+  else digitalWrite(RELAY_ILUMINACION, LOW);
+
+  // 3. Riego
+  if (lecturaHumedad < UMBRAL_HUMEDAD) digitalWrite(RELAY_RIEGO, HIGH);
+  else digitalWrite(RELAY_RIEGO, LOW);
 }
