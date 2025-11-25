@@ -33,6 +33,11 @@ const float LIMITE_TEMP = 26.0;
 const int UMBRAL_LUZ = 500;
 const int UMBRAL_HUMEDAD = 400;
 
+// Variables
+bool sistemaAlarmaActivo = false;
+bool estadoBotonAnterior = HIGH;
+unsigned long tiempoUltimaLectura = 0;
+
 void setup() {
   Serial.begin(9600);
 
@@ -57,5 +62,12 @@ void setup() {
 }
 
 void loop() {
-  // Loop principal
+  // Lecturas
+  int lecturaTemp = analogRead(PIN_TEMP);
+  int lecturaLuz = analogRead(PIN_LUZ);
+  int lecturaHumedad = analogRead(PIN_HUMEDAD);
+
+  // Conversión Temp
+  float voltaje = lecturaTemp * 5.0 / 1024.0;
+  float temperaturaC = (voltaje - 0.5) * 100.0;
 }
