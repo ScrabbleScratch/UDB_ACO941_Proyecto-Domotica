@@ -14,6 +14,25 @@ Carlos Eduardo Hernández Alas HA221693
 // Configuración LCD
 LiquidCrystal_I2C lcd(0x20, 16, 2); 
 
+// Pines Entradas
+const int PIN_TEMP = A0;
+const int PIN_HUMEDAD = A1;
+const int PIN_LUZ = A2;
+const int PIN_PIR = 2;
+const int PIN_BOTON_ALARMA = 12; 
+
+// Actuadores (Salidas a los Relés)
+const int RELAY_VENTILACION = 4;
+const int RELAY_ILUMINACION = 5;
+const int RELAY_RIEGO = 6;
+const int PIN_LED_ALARMA = 7;
+const int PIN_BUZZER = 8;
+
+// Umbrales
+const float LIMITE_TEMP = 26.0;
+const int UMBRAL_LUZ = 500;
+const int UMBRAL_HUMEDAD = 400;
+
 void setup() {
   Serial.begin(9600);
 
