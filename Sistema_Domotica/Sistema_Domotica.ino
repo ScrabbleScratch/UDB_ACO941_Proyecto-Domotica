@@ -62,6 +62,8 @@ void setup() {
 }
 
 void loop() {
+  gestionarAlarma();
+
   // Lecturas
   int lecturaTemp = analogRead(PIN_TEMP);
   int lecturaLuz = analogRead(PIN_LUZ);
@@ -84,4 +86,26 @@ void loop() {
   // 3. Riego
   if (lecturaHumedad < UMBRAL_HUMEDAD) digitalWrite(RELAY_RIEGO, HIGH);
   else digitalWrite(RELAY_RIEGO, LOW);
+}
+
+void gestionarAlarma() {
+  bool estadoBotonActual = digitalRead(PIN_BOTON_ALARMA);
+
+  if (estadoBotonActual == LOW && estadoBotonAnterior == HIGH) {
+    sistemaAlarmaActivo = !sistemaAlarmaActivo;
+    delay(200); 
+  }
+  estadoBotonAnterior = estadoBotonActual;
+
+  if (sistemaAlarmaActivo) {
+    digitalWrite(PIN_LED_ALARMA, HIGH);
+    if (digitalRead(PIN_PIR) == HIGH) {
+    tone(PIN_BUZZER, 500); 
+    } else {
+    noTone(PIN_BUZZER);
+    }
+  } else {
+    digitalWrite(PIN_LED_ALARMA, LOW);
+    noTone(PIN_BUZZER);
+  }
 }
