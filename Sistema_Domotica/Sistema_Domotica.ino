@@ -40,8 +40,20 @@ void setup() {
   lcd.backlight();
   lcd.setCursor(0,0);
   lcd.print("Sistema Domotica");
-  delay(2000);
+  delay(500);
   lcd.clear();
+  lcd.print("ACO941 G01T (V)");
+  delay(500);
+  lcd.clear();
+
+  pinMode(PIN_PIR, INPUT);
+  pinMode(PIN_BOTON_ALARMA, INPUT_PULLUP);
+
+  pinMode(RELAY_VENTILACION, OUTPUT);
+  pinMode(RELAY_ILUMINACION, OUTPUT);
+  pinMode(RELAY_RIEGO, OUTPUT);
+  pinMode(PIN_LED_ALARMA, OUTPUT);
+  pinMode(PIN_BUZZER, OUTPUT);
 }
 
 void loop() {
